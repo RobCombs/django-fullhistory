@@ -43,12 +43,11 @@ def history_audit(request, object_id, model, template, extra_context=None):
 
 def history_version(request, object_id, version, model, template, extra_context=None):
     version = int(version)
+    obj = get_object_or_404(model, pk=object_id)
     try:
         action = FullHistory.objects.actions_for_object(model=model, pk=object_id).get(revision=version)
     except FullHistory.DoesNotExist:
         raise Http404()
-    obj = FullHistory.objects.rollback(model=model, pk=object_id, 
-                                       commit=False, audit=False, version=version)
     opts = model._meta
     app_label = opts.app_label
     context = {

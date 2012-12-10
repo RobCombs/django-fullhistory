@@ -72,6 +72,8 @@ class FullHistoryHandler(object):
             oldvalue = entry._fullhistory.get(key, None)
             newvalue = newdata.get(key, None)
             if oldvalue != newvalue:
+		if hasattr(getattr(entry, key), 'all'):
+	  	   newvalue = ', '.join(['%s(id=%s)' % (s, s.id) for s in getattr(entry, key).all()])
                 ret[key] = (oldvalue, newvalue)
         return ret
 
