@@ -73,7 +73,9 @@ class FullHistoryHandler(object):
             newvalue = newdata.get(key, None)
             if oldvalue != newvalue:
                 if hasattr(getattr(entry, key), 'all'):
-                    newvalue = ', '.join(['%s(id=%s)' % (s, s.id) for s in getattr(entry, key).all()])
+                    newvalue = ', '.join(['%s (id=%s)' % (s, s.id) for s in getattr(entry, key).all()])
+                    model_class = getattr(entry, key).model
+                    oldvalue = ', '.join(['%s (id=%s)' % (s, s.id) for s in model_class.objects.filter(id__in=oldvalue)])
                 ret[key] = (oldvalue, newvalue)
         return ret
 
@@ -106,8 +108,6 @@ class FullHistoryHandler(object):
         request = get_or_create_request()
         if action == 'U':
             data = self.get_difference(entry)
-            if len(data) == 0:
-                data = self.get_all_data_tuple(entry)
         elif action == 'C':
             data = self.get_all_data_tuple(entry)
         else:
