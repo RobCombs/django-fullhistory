@@ -24,8 +24,5 @@ setup(name='fullhistory',
       packages=find_packages(exclude=['ez_setup', 'examples', 'testproject', 'tests']),
       include_package_data=True,
       zip_safe=False,
-      install_requires=[
-        'django',
-      ],
       test_suite="testproject.runtests.runtests",
       )
