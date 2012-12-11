@@ -2,7 +2,7 @@ To install:
 
 sudo setup.py install
 
-*add fullhistory middleware
+* Add fullhistory middleware
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -13,11 +13,17 @@ MIDDLEWARE_CLASSES = (
     'fullhistory.fullhistory.FullHistoryMiddleware',
 )
 
-* add fullhistory to installed apps:
+* Add fullhistory to installed apps:
 
 INSTALLED_APPS = (
     'fullhistory',
 )
+
+* Subclass fullhistory in your admin class:
+
+from fullhistory.admin import FullHistoryAdmin
+
+class FeatureFlagAdmin(FullHistoryAdmin):
 
 * In your models.py, select the models you want to have fullhistory:
 
