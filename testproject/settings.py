@@ -85,6 +85,6 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.admin',
     'fullhistory',
-    'ticketmanager',
+    'testproject.ticketmanager',
 )
 
