@@ -31,9 +31,19 @@ class TriageState(AbstractCategory):
 class Parameter(AbstractCategory):
     pass
 
-class Ticket(models.Model):
+class SimpleTicket(models.Model):
     summary = models.CharField(max_length=100)
     description = models.TextField()
+
+    time_opened = models.DateTimeField(auto_now_add=True)
+    time_updated = models.DateTimeField(auto_now=True)
+
+    history = HistoryField()
+
+    def __unicode__(self):
+        return self.summary
+
+class Ticket(SimpleTicket):
     reported_by = models.ForeignKey(User, blank=True, null=True, related_name='reported_tickets')
     assigned_to = models.ForeignKey(User, blank=True, null=True, related_name='assigned_tickets')
     milestone = models.ForeignKey(Milestone, blank=True, null=True)
@@ -43,14 +53,6 @@ class Ticket(models.Model):
     cc = models.TextField(blank=True)
     triage_state = models.ForeignKey(TriageState)
     parameters = models.ManyToManyField(Parameter, blank=True)
-
-    time_opened = models.DateTimeField(auto_now_add=True)
-    time_updated = models.DateTimeField(auto_now=True)
-
-    history = HistoryField()
-
-    def __unicode__(self):
-        return self.summary
 
     @models.permalink
     def get_absolute_url(self):

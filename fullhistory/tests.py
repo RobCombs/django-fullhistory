@@ -107,12 +107,8 @@ class FullHistoryTest(TestCase):
         t4.save()
         t2 = Test2Model.objects.get(pk=t4.pk)
         self.assertTrue('field1' in t2.history.all().latest().data)
-        try:
-            self.assertTrue('field2' in t4.history.all().latest().data)
-        except AssertionError:
-            if django1_1:
-                raise
-            #known bug for Django 1.0, see ticket #9546
+        self.assertEqual(t2.history.all().latest().data['field1'], ['test1','test1a'])
+        self.assertTrue('field2' not in t4.history.all().latest().data)
 
     def test_m2m_adjustments(self):
         fullhistory.end_session()
@@ -125,14 +121,14 @@ class FullHistoryTest(TestCase):
         self.assertNotEqual(None, history)
         self.assertTrue('test1_m2m' in history.data)
         self.assertEqual(1, len(history.data['test1_m2m']))
-        self.assertEqual(history.data['test1_m2m'][0], [t1a.pk])
+        self.assertEqual(history.data['test1_m2m'][0], "Test1Model object (id=%s)" % t1a.pk)
         fullhistory.end_session()
         t1b = Test1Model(field1="testb")
         t1b.save()
         t3.test1_m2m.add(t1b)
         history = fullhistory.adjust_history(t3)
-        self.assertEqual(history.data['test1_m2m'][0], [t1a.pk])
-        self.assertTrue(t1a.pk in history.data['test1_m2m'][1] and t1b.pk in history.data['test1_m2m'][1])
+        self.assertEqual(history.data['test1_m2m'][0], "Test1Model object (id=%s)" % t1a.pk)
+        self.assertTrue(str(t1a.pk) in history.data['test1_m2m'][1] and str(t1b.pk) in history.data['test1_m2m'][1])
         self.assertEqual(2, len(FullHistory.objects.actions_for_object(t3)))
 
     def test_autofield_with_specified_obj(self):

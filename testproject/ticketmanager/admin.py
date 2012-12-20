@@ -18,11 +18,15 @@ class CommentInline(admin.StackedInline):
 class TicketAttachmentInline(admin.StackedInline):
     model = TicketAttachment
 
+class SimpleTicketAdmin(FullHistoryAdmin):
+    list_display = ('summary', 'time_opened', 'time_updated',)
+
 class TicketAdmin(FullHistoryAdmin):
     list_display = ('summary', 'milestone', 'component', 'version', 'triage_state', 'reported_by', 'assigned_to')
     list_filter = ('triage_state', 'milestone', 'component', 'version')
     date_hierarchy = 'time_opened'
     inlines = [CommentInline, TicketAttachmentInline]
 
+admin.site.register(SimpleTicket, SimpleTicketAdmin)
 admin.site.register(Ticket, TicketAdmin)
 

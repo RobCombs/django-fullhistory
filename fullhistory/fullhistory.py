@@ -159,7 +159,13 @@ class FullHistoryHandler(object):
         '''
         for field in instance._meta.parents.values():
             if field and getattr(instance, field.name, None):
-                func(getattr(instance, field.name))
+                old_parent = getattr(instance, field.name)
+                try:
+                    parent = old_parent.__class__.objects.get(id=old_parent.id)
+                    parent._fullhistory = old_parent._fullhistory
+                except:
+                    parent = old_parent
+                func(parent)
 
 REGISTERED_MODELS = dict()
 
