@@ -37,8 +37,7 @@ class FullHistoryAdminSite(admin.AdminSite):
                                  ("admin/%s/%s/object_fullhistory.html" % (opts.app_label, opts.object_name.lower()),
                                   "admin/%s/object_fullhistory.html" % opts.app_label,
                                   "admin/object_fullhistory.html"),
-                                {'root_path': self.root_path,
-                                 'admin_name': getattr(self, 'name', 'admin'),})
+                                {'admin_name': getattr(self, 'name', 'admin'),})
     
     def history_audit_view(self, request, object_id, model):
         opts = model._meta
@@ -48,8 +47,7 @@ class FullHistoryAdminSite(admin.AdminSite):
                                    ("admin/%s/%s/object_audit_fullhistory.html" % (opts.app_label, opts.object_name.lower()),
                                     "admin/%s/object_audit_fullhistory.html" % opts.app_label,
                                     "admin/object_audit_fullhistory.html"),
-                                   {'root_path': self.root_path,
-                                    'admin_name': getattr(self, 'name', 'admin'),})
+                                   {'admin_name': getattr(self, 'name', 'admin'),})
 
     def history_version_view(self, request, object_id, version, model):
         opts = model._meta
@@ -60,8 +58,7 @@ class FullHistoryAdminSite(admin.AdminSite):
                                      ("admin/%s/%s/object_version_fullhistory.html" % (opts.app_label, opts.object_name.lower()),
                                       "admin/%s/object_version_fullhistory.html" % opts.app_label,
                                       "admin/object_version_fullhistory.html"),
-                                     {'root_path': self.root_path,
-                                      'admin_name': getattr(self, 'name', 'admin'),})
+                                     {'admin_name': getattr(self, 'name', 'admin'),})
 
 class FullHistoryAdmin(admin.ModelAdmin):
     def __call__(self, request, url): #django 1.0
@@ -115,8 +112,7 @@ class FullHistoryAdmin(admin.ModelAdmin):
                                  ("admin/%s/%s/object_fullhistory.html" % (opts.app_label, opts.object_name.lower()),
                                   "admin/%s/object_fullhistory.html" % opts.app_label,
                                   "admin/object_fullhistory.html"),
-                                {'root_path': self.admin_site.root_path,
-                                 'admin_name': getattr(self.admin_site, 'name', 'admin'),})
+                                {'admin_name': getattr(self.admin_site, 'name', 'admin'),})
     
     def history_audit_view(self, request, object_id):
         opts = self.model._meta
@@ -126,8 +122,7 @@ class FullHistoryAdmin(admin.ModelAdmin):
                                    ("admin/%s/%s/object_audit_fullhistory.html" % (opts.app_label, opts.object_name.lower()),
                                     "admin/%s/object_audit_fullhistory.html" % opts.app_label,
                                     "admin/object_audit_fullhistory.html"),
-                                   {'root_path': self.admin_site.root_path,
-                                    'admin_name': getattr(self.admin_site, 'name', 'admin'),})
+                                   {'admin_name': getattr(self.admin_site, 'name', 'admin'),})
 
     def history_version_view(self, request, object_id, version):
         opts = self.model._meta
@@ -138,8 +133,7 @@ class FullHistoryAdmin(admin.ModelAdmin):
                                      ("admin/%s/%s/object_version_fullhistory.html" % (opts.app_label, opts.object_name.lower()),
                                       "admin/%s/object_version_fullhistory.html" % opts.app_label,
                                       "admin/object_version_fullhistory.html"),
-                                     {'root_path': self.admin_site.root_path,
-                                      'admin_name': getattr(self.admin_site, 'name', 'admin'),})
+                                     {'admin_name': getattr(self.admin_site, 'name', 'admin'),})
 
     def log_addition(self, request, obj):
         fullhistory.adjust_history(obj, 'A')

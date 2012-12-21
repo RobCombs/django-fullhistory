@@ -108,6 +108,7 @@ class FullHistoryTest(TestCase):
         t2 = Test2Model.objects.get(pk=t4.pk)
         self.assertTrue('field1' in t2.history.all().latest().data)
         self.assertEqual(t2.history.all().latest().data['field1'], ['test1','test1a'])
+        self.assertTrue('field1' in t4.history.all().latest().data)
         self.assertTrue('field2' not in t4.history.all().latest().data)
 
     def test_m2m_adjustments(self):
