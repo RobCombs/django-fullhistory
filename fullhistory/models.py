@@ -4,7 +4,11 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
-from django.core.serializers.json import DjangoJSONEncoder, simplejson
+from django.core.serializers.json import DjangoJSONEncoder
+try:
+    import json as simplejson
+except ImportError:
+    from django.core.serializers.json import simplejson
 
 import datetime
 
@@ -54,9 +58,11 @@ class FullHistoryManager(models.Manager):
             from fullhistory import REGISTERED_MODELS
             handler = REGISTERED_MODELS[type(entry)]
             for key, value in handler.get_all_data(entry).items():
-                #!Truncates microseconds for datetime fields
+                #!Truncates microseconds for datetime fields and clean up possible
+                # differences introduced in django1.4 changes to serializing datetimes
                 if isinstance(value, datetime.datetime):
-                    value = str(value.replace(microsecond=0))
+                    value = str(value)[:19]
+                    obj[key] = obj[key].replace('T', ' ')[:19]
                 assert obj[key] == value, ('%s does not match %s for attr %s' % 
                                            (obj[key], value, key))
         return obj
