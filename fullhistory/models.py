@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
 from django.core.serializers.json import DjangoJSONEncoder
 import json
@@ -23,7 +23,7 @@ class Request(models.Model):
         '''
         if self.user_pk is None:
             return None
-        return User.objects.get(pk=self.user_pk)
+        return get_user_model().objects.get(pk=self.user_pk)
 
     def __unicode__(self):
         return self.request_path
